@@ -1,0 +1,15 @@
+
+@import "tailwindcss";
+
+@theme {
+  --color-primary: #2563eb; /* blue-600 */
+  --color-primary-hover: #1d4ed8; /* blue-700 */
+  --color-secondary: #9333ea; /* purple-600 */
+  --color-secondary-hover: #7e22ce; /* purple-700 */
+}
+
+@layer base {
+  body {
+    @apply bg-gray-50 text-gray-900 font-sans antialiased;
+  }
+}
