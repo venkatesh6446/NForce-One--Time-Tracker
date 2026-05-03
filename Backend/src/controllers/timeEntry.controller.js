@@ -1,4 +1,5 @@
 import * as timeEntryService from "../services/timeEntry.service.js";
+import * as notificationService from "../services/notification.service.js";
 
 // ================= CREATE =================
 export const createTimeEntry = async (req, res) => {
@@ -6,10 +7,10 @@ export const createTimeEntry = async (req, res) => {
     const userId = req.user.id;
 
     // ✅ FIXED VALIDATION (removed managerId)
-    if (!req.body.project || !req.body.task || !req.body.hours) {
+    if (!req.body.client || !req.body.project || !req.body.task || !req.body.hours) {
       return res.status(400).json({
         success: false,
-        message: "Project, Task and Hours are required",
+        message: "Client, Project, Task and Hours are required",
       });
     }
 
@@ -21,11 +22,16 @@ export const createTimeEntry = async (req, res) => {
     // ✅ FINAL DATA (clean + matches model)
     const normalizedData = {
       userId, // comes from logged-in user
+      client: req.body.client || null,
       project: req.body.project,
       task: req.body.task,
       entryDate,
       hours: Number(req.body.hours),
       description: req.body.description || "",
+      managerId: req.body.managerId || null, // ✅ ADD MANAGER ID
+      clientId: req.body.clientId || null,
+      projectId: req.body.projectId || null,
+      taskId: req.body.taskId || null,
       status: "DRAFT",
     };
 
@@ -57,6 +63,8 @@ export const getTimeEntries = async (req, res) => {
 
     if (user.role === "EMPLOYEE") {
       entries = await timeEntryService.getEntriesByUser(user.id);
+    } else if (user.role === "MANAGER") {
+      entries = await timeEntryService.getEntriesByManager(user.id);
     } else {
       entries = await timeEntryService.getAllTimeEntries();
     }
@@ -142,8 +150,14 @@ export const submitTimeEntry = async (req, res) => {
 
     if (!entry) throw new Error("Time entry not found");
 
+    if (entry.status !== "DRAFT") {
+      throw new Error("Only DRAFT entries can be submitted");
+    }
+
     entry.status = "SUBMITTED";
     await entry.save();
+
+    await notificationService.notifyTimesheetSubmitted(entry);
 
     res.json({
       success: true,
@@ -178,6 +192,8 @@ export const approveTimeEntry = async (req, res) => {
     entry.status = "APPROVED";
     await entry.save();
 
+    await notificationService.notifyTimesheetApproved(entry);
+
     res.json({
       success: true,
       data: entry,
@@ -210,6 +226,8 @@ export const rejectTimeEntry = async (req, res) => {
 
     entry.status = "REJECTED";
     await entry.save();
+
+    await notificationService.notifyTimesheetRejected(entry);
 
     res.json({
       success: true,

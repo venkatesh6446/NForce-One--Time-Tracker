@@ -29,7 +29,10 @@ export const registerUser = async (data) => {
     );
   }
 
-  const existingUser = await User.findOne({ where: { email } });
+  const existingUser = await User.findOne({
+    where: { email },
+    attributes: ["id"],
+  });
   if (existingUser) {
     throw new Error("User already exists");
   }
@@ -56,10 +59,17 @@ export const registerUser = async (data) => {
 
 // ================= LOGIN =================
 export const loginUser = async ({ email, password }) => {
-  const user = await User.findOne({ where: { email } });
+  const user = await User.findOne({
+    where: { email },
+    attributes: ["id", "name", "email", "password", "role", "department", "managerId", "isActive", "defaultHours"],
+  });
 
   if (!user) {
     throw new Error("Invalid credentials");
+  }
+
+  if (!user.isActive) {
+    throw new Error("Account is deactivated. Contact admin.");
   }
 
   const isMatch = await bcrypt.compare(password, user.password);
@@ -85,7 +95,10 @@ export const loginUser = async ({ email, password }) => {
 export const forgotPassword = async (email) => {
   console.log("FORGOT PASSWORD EMAIL:", email);
 
-  const user = await User.findOne({ where: { email } });
+  const user = await User.findOne({
+    where: { email },
+    attributes: ["id", "name", "email", "resetToken", "resetTokenExpiry"],
+  });
 
   if (!user) {
     return {
@@ -156,7 +169,8 @@ export const resetPassword = async (token, password) => {
   console.log("HASHED TOKEN:", hashedToken);
 
   const user = await User.findOne({
-    where: { resetToken: hashedToken }
+    where: { resetToken: hashedToken },
+    attributes: ["id", "password", "resetToken", "resetTokenExpiry"],
   });
 
   if (!user) {
