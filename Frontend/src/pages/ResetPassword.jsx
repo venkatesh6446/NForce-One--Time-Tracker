@@ -59,198 +59,82 @@ const ResetPassword = () => {
     <div
       className="min-h-screen flex items-center justify-center px-4 relative overflow-hidden"
       style={{
-        backgroundImage: `url(${bg})`,
+        backgroundImage: `linear-gradient(rgba(15,15,15,0.85), rgba(15,15,15,0.85)), url(${bg})`,
         backgroundSize: "cover",
         backgroundPosition: "center",
       }}
     >
-      {/* 🔥 OVERLAY */}
-      <div className="absolute inset-0 bg-gradient-to-br from-black/70 via-black/60 to-red-900/60"></div>
+      {/* Overlay */}
+      <div className="absolute inset-0 bg-gradient-to-br from-bg-primary/70 via-bg-primary/60 to-accent/20"></div>
 
-      {/* ✨ LIGHT EFFECT */}
-      <div className="light-beam"></div>
+      {/* Light Effect */}
+      <div className="absolute inset-0 pointer-events-none overflow-hidden">
+        <div className="absolute w-[200%] h-[200%] bg-gradient-to-r from-transparent via-accent/10 to-transparent animate-[beamMove_6s_linear_infinite] -translate-x-1/2 -translate-y-1/2"></div>
+      </div>
 
-      <div className="relative w-full max-w-md z-10 animate-fadeIn">
+      <div className="relative w-full max-w-md z-10 animate-[fadeIn_0.8s_ease]">
 
-        {/* 🔥 LOGO */}
+        {/* Logo */}
         <div className="flex justify-center mb-6">
-          <div className="flex items-center gap-3 text-white">
-
-            <div className="w-12 h-12 rounded-full overflow-hidden border border-red-500 logo-glow">
+          <div className="flex items-center gap-3 text-text-primary">
+            <div className="w-12 h-12 rounded-full overflow-hidden border border-accent logo-glow">
               <img src={logo} alt="logo" className="w-full h-full object-cover" />
             </div>
-
-            <span className="text-3xl font-bold">NForce Pulse</span>
+            <span className="text-3xl font-bold text-text-primary">NForce Pulse</span>
           </div>
         </div>
 
-        {/* CARD */}
-        <div className="card-modern p-8">
+        {/* Card */}
+        <div className="bg-bg-secondary/80 backdrop-blur-xl border border-accent/20 rounded-2xl shadow-[0_0_30px_rgba(255,45,45,0.2)] p-8 transition-transform duration-300 hover:scale-[1.02]">
 
           <div className="text-center mb-6">
-            <h2 className="text-2xl text-white animate-slideDown">
+            <h2 className="text-2xl text-text-primary animate-[slideDown_0.6s_ease]">
               Reset Password
             </h2>
           </div>
 
           <form onSubmit={handleSubmit} className="space-y-5">
 
-            {error && <div className="error-anim">{error}</div>}
-            {message && <div className="success-anim">{message}</div>}
+            {error && <div className="bg-red-500/20 border border-red-500/30 text-red-400 px-4 py-2 rounded-lg animate-[shake_0.3s]">{error}</div>}
+            {message && <div className="bg-green-500/20 border border-green-400/30 text-green-400 px-4 py-2 rounded-lg animate-[fadeIn_0.5s]">{message}</div>}
 
-            <div className="field-anim">
+            <div className="animate-[fadeUp_0.6s_ease_forwards]">
               <Input
                 type="password"
                 placeholder="New Password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 required
-                className="input-modern"
+                className="bg-bg-tertiary/50 border-border-subtle text-text-primary placeholder:text-text-secondary focus:border-accent focus:ring-1 focus:ring-accent"
               />
             </div>
 
-            <div className="field-anim delay-1">
+            <div className="animate-[fadeUp_0.6s_ease_forwards] delay-200">
               <Input
                 type="password"
                 placeholder="Confirm Password"
                 value={confirmPassword}
                 onChange={(e) => setConfirmPassword(e.target.value)}
                 required
-                className="input-modern"
+                className="bg-bg-tertiary/50 border-border-subtle text-text-primary placeholder:text-text-secondary focus:border-accent focus:ring-1 focus:ring-accent"
               />
             </div>
 
-            <Button
+            <button
               type="submit"
               disabled={loading}
-              className="btn-modern w-full"
+              className="w-full py-2.5 rounded-lg font-semibold text-white
+              bg-gradient-to-r from-accent via-accent to-accent-hover
+              hover:scale-[1.03] active:scale-[0.98]
+              hover:shadow-[0_0_20px_rgba(255,45,45,0.5)]
+              transition-all duration-300 disabled:opacity-50"
             >
               {loading ? "Updating..." : "Reset Password"}
-            </Button>
+            </button>
 
           </form>
         </div>
       </div>
-
-      {/* 🔥 ANIMATIONS */}
-      <style>
-        {`
-        .animate-fadeIn {
-          animation: fadeIn 0.8s ease;
-        }
-
-        @keyframes fadeIn {
-          from { opacity: 0; transform: translateY(20px); }
-          to { opacity: 1; transform: translateY(0); }
-        }
-
-        .animate-slideDown {
-          animation: slideDown 0.6s ease;
-        }
-
-        @keyframes slideDown {
-          from { transform: translateY(-20px); opacity: 0; }
-          to { transform: translateY(0); opacity: 1; }
-        }
-
-        .field-anim {
-          animation: fadeUp 0.6s ease forwards;
-        }
-
-        .delay-1 { animation-delay: 0.2s; }
-
-        @keyframes fadeUp {
-          from { opacity: 0; transform: translateY(20px); }
-          to { opacity: 1; transform: translateY(0); }
-        }
-
-        .card-modern {
-          background: rgba(0,0,0,0.5);
-          backdrop-filter: blur(20px);
-          border-radius: 20px;
-          border: 1px solid rgba(255,0,0,0.2);
-          box-shadow: 0 0 30px rgba(255,0,0,0.2);
-          transition: transform 0.3s;
-        }
-
-        .card-modern:hover {
-          transform: scale(1.02);
-        }
-
-        .logo-glow {
-          box-shadow: 0 0 20px red;
-          animation: pulseGlow 2s infinite;
-        }
-
-        @keyframes pulseGlow {
-          0% { box-shadow: 0 0 10px red; }
-          50% { box-shadow: 0 0 25px red; }
-          100% { box-shadow: 0 0 10px red; }
-        }
-
-        .input-modern {
-          background: rgba(255,255,255,0.1);
-          border: 1px solid #444;
-          color: white;
-        }
-
-        .input-modern:focus {
-          border-color: red;
-          box-shadow: 0 0 10px rgba(255,0,0,0.5);
-        }
-
-        .btn-modern {
-          background: linear-gradient(90deg, #ff0000, #cc0000);
-          color: white;
-          font-weight: 600;
-          transition: all 0.3s;
-        }
-
-        .btn-modern:hover {
-          transform: scale(1.03);
-          box-shadow: 0 0 20px red;
-        }
-
-        .error-anim {
-          background: rgba(255,0,0,0.1);
-          border: 1px solid red;
-          color: #ff6b6b;
-          padding: 10px;
-          border-radius: 8px;
-          animation: shake 0.3s;
-        }
-
-        .success-anim {
-          background: rgba(0,255,0,0.1);
-          border: 1px solid #00ff88;
-          color: #00ff88;
-          padding: 10px;
-          border-radius: 8px;
-          animation: fadeIn 0.5s;
-        }
-
-        @keyframes shake {
-          0% { transform: translateX(0); }
-          25% { transform: translateX(-5px); }
-          50% { transform: translateX(5px); }
-          75% { transform: translateX(-5px); }
-          100% { transform: translateX(0); }
-        }
-
-        .light-beam {
-          position: absolute;
-          width: 200%;
-          height: 200%;
-          background: linear-gradient(120deg, transparent, rgba(255,0,0,0.15), transparent);
-          animation: beamMove 6s linear infinite;
-        }
-
-        @keyframes beamMove {
-          from { transform: translateX(-50%) translateY(-50%); }
-          to { transform: translateX(50%) translateY(50%); }
-        }
-        `}
-      </style>
     </div>
   );
 };

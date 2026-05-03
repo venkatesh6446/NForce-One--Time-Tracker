@@ -4,7 +4,10 @@ import { cn } from "../../utils/twMerge";
 const Card = React.forwardRef(({ className, ...props }, ref) => (
   <div
     ref={ref}
-    className={cn("rounded-xl border border-gray-200 bg-white text-gray-950 shadow-sm", className)}
+    className={cn(
+      "rounded-xl border border-border-subtle bg-bg-secondary text-text-primary shadow-lg hover:shadow-[0_8px_30px_rgba(255,45,45,0.1)] hover:border-border-accent hover:-translate-y-0.5",
+      className
+    )}
     {...props}
   />
 ));
@@ -16,12 +19,12 @@ const CardHeader = React.forwardRef(({ className, ...props }, ref) => (
 CardHeader.displayName = "CardHeader";
 
 const CardTitle = React.forwardRef(({ className, ...props }, ref) => (
-  <h3 ref={ref} className={cn("font-semibold leading-none tracking-tight", className)} {...props} />
+  <h3 ref={ref} className={cn("font-semibold leading-none tracking-tight text-text-primary", className)} {...props} />
 ));
 CardTitle.displayName = "CardTitle";
 
 const CardDescription = React.forwardRef(({ className, ...props }, ref) => (
-  <p ref={ref} className={cn("text-sm text-gray-500", className)} {...props} />
+  <p ref={ref} className={cn("text-sm text-text-secondary", className)} {...props} />
 ));
 CardDescription.displayName = "CardDescription";
 

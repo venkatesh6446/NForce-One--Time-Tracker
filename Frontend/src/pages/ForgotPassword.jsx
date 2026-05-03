@@ -35,37 +35,37 @@ export const ForgotPassword = () => {
     <div
       className="min-h-screen flex items-center justify-center px-4 relative overflow-hidden"
       style={{
-        backgroundImage: `url(${bg})`,
+        backgroundImage: `linear-gradient(rgba(15,15,15,0.85), rgba(15,15,15,0.85)), url(${bg})`,
         backgroundSize: "cover",
         backgroundPosition: "center",
       }}
     >
-      {/* 🔴 OVERLAY */}
-      <div className="absolute inset-0 bg-black/70"></div>
-      <div className="absolute inset-0 bg-gradient-to-r from-red-900/40 via-black/60 to-black/90"></div>
+      {/* Overlay */}
+      <div className="absolute inset-0 bg-bg-primary/70"></div>
+      <div className="absolute inset-0 bg-gradient-to-r from-accent/10 via-bg-primary/60 to-bg-primary/90"></div>
 
-      {/* ✨ FLOATING PARTICLES */}
-      <div className="particles"></div>
+      <div className="relative w-full max-w-md animate-[fadeIn_0.8s_ease-in-out]">
 
-      <div className="relative w-full max-w-md animate-fadeIn">
-
-        {/* 🔥 LOGO */}
+        {/* Logo */}
         <div className="flex items-center justify-center gap-3 mb-6">
-          <div className="logo-glow w-12 h-12 rounded-full bg-red-600 flex items-center justify-center overflow-hidden">
+          <div className="w-12 h-12 rounded-full bg-accent/20 flex items-center justify-center overflow-hidden border border-accent/50 shadow-[0_0_20px_rgba(255,45,45,0.7)] animate-[pulseGlow_2s_infinite]">
             <img src={logo} alt="logo" className="w-10 h-10 object-contain" />
           </div>
-          <h1 className="text-3xl font-bold text-white tracking-wide">
+          <h1 className="text-3xl font-bold text-text-primary tracking-wide">
             NForce Pulse
           </h1>
         </div>
 
-        {/* 🔥 CARD */}
-        <Card className="glass-card relative rounded-2xl">
+        {/* Card */}
+        <div className="bg-bg-secondary/70 backdrop-blur-xl border border-accent/20 rounded-2xl shadow-[0_0_25px_rgba(255,45,45,0.15)] relative overflow-hidden">
+          {/* Animated border glow */}
+          <div className="absolute inset-[-1px] rounded-2xl bg-gradient-to-r from-transparent via-accent to-transparent animate-[borderGlow_4s_linear_infinite] opacity-40 -z-10"></div>
+
           <CardHeader>
-            <CardTitle className="text-2xl text-center text-white">
+            <CardTitle className="text-2xl text-center text-text-primary">
               Forgot Password
             </CardTitle>
-            <CardDescription className="text-center text-gray-400">
+            <CardDescription className="text-center text-text-secondary">
               Enter your email to receive a reset link
             </CardDescription>
           </CardHeader>
@@ -73,9 +73,9 @@ export const ForgotPassword = () => {
           <CardContent>
             <form onSubmit={handleSubmit} className="space-y-4">
 
-              {/* ✅ SUCCESS MESSAGE WITH ANIMATION */}
+              {/* Success Message */}
               {message && (
-                <div className="success-box text-center">
+                <div className="bg-green-500/20 border border-green-400/30 text-green-400 px-4 py-2 rounded-lg text-sm animate-[successPop_0.5s_ease]">
                   {message}
                 </div>
               )}
@@ -86,19 +86,23 @@ export const ForgotPassword = () => {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required
-                className="input-modern"
+                className="bg-bg-tertiary/50 border-border-subtle text-text-primary placeholder:text-text-secondary focus:border-accent focus:ring-1 focus:ring-accent"
               />
 
-              <Button
+              <button
                 type="submit"
-                className="btn-modern w-full"
+                className="w-full py-2.5 rounded-lg font-semibold text-white
+                bg-gradient-to-r from-accent via-accent to-accent-hover
+                hover:scale-[1.03] active:scale-[0.98]
+                hover:shadow-[0_0_15px_rgba(255,45,45,0.6)]
+                transition-all duration-300"
               >
                 Send Reset Link
-              </Button>
+              </button>
 
               <div className="text-center text-sm mt-2">
                 <span
-                  className="text-red-400 cursor-pointer hover:underline hover:text-red-500 transition"
+                  className="text-accent cursor-pointer hover:underline hover:text-accent-hover transition-colors"
                   onClick={() => navigate("/login")}
                 >
                   Back to Login
@@ -107,118 +111,8 @@ export const ForgotPassword = () => {
 
             </form>
           </CardContent>
-        </Card>
-
+        </div>
       </div>
-
-      {/* 🔥 ALL ANIMATIONS */}
-      <style>
-        {`
-        /* FADE IN */
-        .animate-fadeIn {
-          animation: fadeIn 0.8s ease-in-out;
-        }
-
-        @keyframes fadeIn {
-          from { opacity: 0; transform: translateY(20px); }
-          to { opacity: 1; transform: translateY(0); }
-        }
-
-        /* GLASS CARD */
-        .glass-card {
-          background: rgba(0,0,0,0.7);
-          backdrop-filter: blur(15px);
-          border: 1px solid rgba(255,0,0,0.2);
-          box-shadow: 0 0 25px rgba(255,0,0,0.15);
-        }
-
-        /* 🔴 GLOW BORDER */
-        .glass-card::before {
-          content: "";
-          position: absolute;
-          inset: -1px;
-          border-radius: 16px;
-          background: linear-gradient(90deg, transparent, red, transparent);
-          animation: borderGlow 4s linear infinite;
-          z-index: -1;
-        }
-
-        @keyframes borderGlow {
-          0% { opacity: 0.2; }
-          50% { opacity: 0.6; }
-          100% { opacity: 0.2; }
-        }
-
-        /* LOGO GLOW */
-        .logo-glow {
-          box-shadow: 0 0 20px rgba(255,0,0,0.7);
-          animation: pulseGlow 2s infinite;
-        }
-
-        @keyframes pulseGlow {
-          0% { box-shadow: 0 0 10px red; }
-          50% { box-shadow: 0 0 25px red; }
-          100% { box-shadow: 0 0 10px red; }
-        }
-
-        /* INPUT */
-        .input-modern {
-          background: rgba(255,255,255,0.1);
-          border: 1px solid #444;
-          color: white;
-        }
-
-        .input-modern:focus {
-          border-color: red;
-          box-shadow: 0 0 8px rgba(255,0,0,0.5);
-        }
-
-        /* BUTTON */
-        .btn-modern {
-          background: linear-gradient(90deg, #ff0000, #cc0000);
-          color: white;
-          font-weight: 600;
-          transition: all 0.3s;
-        }
-
-        .btn-modern:hover {
-          transform: scale(1.03);
-          box-shadow: 0 0 15px rgba(255,0,0,0.6);
-        }
-
-        /* SUCCESS ANIMATION */
-        .success-box {
-          background: rgba(0,255,150,0.1);
-          border: 1px solid rgba(0,255,150,0.4);
-          color: #00ff9c;
-          padding: 10px;
-          border-radius: 8px;
-          animation: successPop 0.5s ease;
-        }
-
-        @keyframes successPop {
-          0% { transform: scale(0.8); opacity: 0; }
-          100% { transform: scale(1); opacity: 1; }
-        }
-
-        /* ✨ PARTICLES */
-        .particles::before {
-          content: "";
-          position: absolute;
-          width: 200%;
-          height: 200%;
-          background-image: radial-gradient(red 1px, transparent 1px);
-          background-size: 40px 40px;
-          animation: moveParticles 20s linear infinite;
-          opacity: 0.2;
-        }
-
-        @keyframes moveParticles {
-          from { transform: translate(0,0); }
-          to { transform: translate(-200px, -200px); }
-        }
-        `}
-      </style>
     </div>
   );
 };
