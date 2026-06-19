@@ -1,4 +1,5 @@
 Time Tracking Workforce Management System
+
 📌 Project Overview
 
 Time Tracking Workforce Management System is a scalable full-stack enterprise application designed to streamline workforce operations through efficient time tracking, project management, timesheet approvals, reporting, and analytics. Built using React.js, Node.js, Express.js, Sequelize ORM, and MySQL, the platform provides a centralized solution for managing employee productivity, project utilization, and organizational workflows.
